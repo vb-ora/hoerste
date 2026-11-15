@@ -1,0 +1,59 @@
+{% extends "basis.html" %}
+{% block inhalt %}
+<section class="karte">
+  <h2>Klang</h2>
+  <p class="hinweis">Tippen spielt einen Synth-Ton. Der erste Tipp startet die Audio-Engine. Auf dem iPhone ggf. den Stummschalter prüfen.</p>
+  <div class="tasten" id="tasten">
+    <button class="taste" data-midi="48">C3</button>
+    <button class="taste" data-midi="57">A3</button>
+    <button class="taste" data-midi="60">C4</button>
+    <button class="taste" data-midi="64">E4</button>
+    <button class="taste" data-midi="67">G4</button>
+    <button class="taste" data-midi="69">A4</button>
+    <button class="taste breit" data-akkord="60,64,67">C-Dur-Akkord</button>
+    <button class="taste breit" data-folge="60,64,67,72">C E G C nacheinander</button>
+  </div>
+  <label class="regler">Lautstärke
+    <input type="range" id="lautstaerke" min="0" max="1" step="0.05" value="0.6">
+  </label>
+</section>
+
+<section class="karte">
+  <h2>Mikrofon</h2>
+  <p class="hinweis">Mit Kopfhörern testen, wenn Ton und Mikrofon gleichzeitig laufen.</p>
+  <button class="knopf" id="mikro-knopf">Mikrofon an</button>
+  <p class="fehler" id="mikro-fehler" hidden></p>
+
+  <div class="anzeige" aria-live="polite">
+    <div class="note" id="note">–</div>
+    <div class="frequenz"><span id="frequenz">–</span> Hz</div>
+    <div class="cent-skala">
+      <div class="cent-mitte"></div>
+      <div class="cent-zeiger" id="cent-zeiger"></div>
+    </div>
+    <div class="cent-wert"><span id="cent">–</span> Cent</div>
+  </div>
+
+  <div class="pegel"><div class="pegel-balken" id="pegel"></div><div class="pegel-schwelle" id="pegel-schwelle"></div></div>
+  <label class="regler">Lautstärke-Schwelle (RMS)
+    <input type="range" id="schwelle" min="0.002" max="0.08" step="0.002" value="0.01">
+    <span id="schwelle-wert">0.010</span>
+  </label>
+  <p class="klein">Klarheit: <span id="klarheit">–</span></p>
+</section>
+
+<section class="karte">
+  <h2>Diagnose</h2>
+  <dl class="diagnose" id="diagnose">
+    <dt>AudioContext</dt><dd id="d-zustand">noch nicht gestartet</dd>
+    <dt>Abtastrate</dt><dd id="d-rate">–</dd>
+    <dt>baseLatency</dt><dd id="d-base">–</dd>
+    <dt>outputLatency</dt><dd id="d-output">–</dd>
+    <dt>Mikrofon-Einstellungen</dt><dd id="d-mikro">–</dd>
+    <dt>Browser</dt><dd id="d-browser">–</dd>
+  </dl>
+</section>
+{% endblock %}
+{% block skripte %}
+<script type="module" src="/static/js/labor.js"></script>
+{% endblock %}

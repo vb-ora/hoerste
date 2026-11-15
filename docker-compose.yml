@@ -1,0 +1,13 @@
+services:
+  hoerste:
+    build: .
+    container_name: hoerste
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - HOERSTE_DATA_DIR=/data
+      - TZ=Europe/Berlin
+    ports:
+      - "8020:8000"   # DSM-Reverse-Proxy: hoerste.bora-emby.synology.me (HTTPS) → localhost:8020
+    volumes:
+      - ./data:/data  # Bind-Mount: hoerste.db und backups/ bleiben auf der NAS sichtbar

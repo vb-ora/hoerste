@@ -1,0 +1,10 @@
+Mitgelieferte Fremdbibliotheken (kein npm, kein CDN)
+
+pitchy 4.1.0 (MIT, Ian Johnson) – https://github.com/ianprime0509/pitchy
+  Quelle: https://registry.npmjs.org/pitchy/-/pitchy-4.1.0.tgz (index.js)
+  Änderung: Import "fft.js" auf relativen Pfad "../fft/fft.js" umgestellt.
+
+fft.js 4.0.4 (MIT, Fedor Indutny) – https://github.com/indutny/fft.js
+  Quelle: https://registry.npmjs.org/fft.js/-/fft.js-4.0.4.tgz (lib/fft.js)
+  Änderung: "module.exports = FFT" durch "export default FFT" ersetzt (ES-Modul).
+  LICENSE stammt aus dem Lizenzabschnitt der README des Pakets.

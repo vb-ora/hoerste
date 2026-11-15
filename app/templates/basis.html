@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>{{ titel }} · Hörste</title>
+  <link rel="stylesheet" href="/static/css/stil.css">
+</head>
+<body>
+  <header class="kopf">
+    <span class="logo">Hörste</span>
+    <span class="kopf-titel">{{ titel }}</span>
+  </header>
+  <main class="inhalt">
+    {% block inhalt %}{% endblock %}
+  </main>
+  {% block skripte %}{% endblock %}
+</body>
+</html>

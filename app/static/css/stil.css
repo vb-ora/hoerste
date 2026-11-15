@@ -1,0 +1,84 @@
+/* Hörste – Grundstil. Eigene Farben: warmes Papier, Tinte, Kupfer. */
+:root {
+  --papier: #f6f1e7;
+  --flaeche: #fffaf1;
+  --tinte: #23201b;
+  --leise: #6b6357;
+  --linie: #ddd3c2;
+  --kupfer: #b5582a;
+  --kupfer-hell: #f0d9c8;
+  --gut: #2f7d55;
+  --warn: #b23a3a;
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --papier: #1a1815;
+    --flaeche: #24211d;
+    --tinte: #efe8dc;
+    --leise: #a69d8f;
+    --linie: #3a352e;
+    --kupfer: #e07a45;
+    --kupfer-hell: #4a2f20;
+    --gut: #5cc08a;
+    --warn: #e56b6b;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--papier);
+  color: var(--tinte);
+  font: 17px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.kopf {
+  display: flex; align-items: baseline; gap: 12px;
+  padding: calc(12px + env(safe-area-inset-top)) 16px 12px;
+  border-bottom: 1px solid var(--linie);
+}
+.logo { font-weight: 800; font-size: 1.35rem; letter-spacing: .02em; color: var(--kupfer); }
+.kopf-titel { color: var(--leise); }
+.inhalt { max-width: 640px; margin: 0 auto; padding: 16px 16px calc(32px + env(safe-area-inset-bottom)); }
+.karte {
+  background: var(--flaeche); border: 1px solid var(--linie);
+  border-radius: var(--radius); padding: 16px; margin-bottom: 16px;
+}
+.karte h2 { margin: 0 0 4px; font-size: 1.1rem; }
+.hinweis, .klein { color: var(--leise); font-size: .92rem; margin: 0 0 12px; }
+.klein { margin: 8px 0 0; }
+button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+.tasten { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.taste, .knopf {
+  min-height: 56px; border-radius: 12px; border: 1px solid var(--linie);
+  background: var(--papier); font-weight: 600; cursor: pointer;
+}
+.taste:active, .taste.aktiv { background: var(--kupfer-hell); border-color: var(--kupfer); }
+.taste.breit { grid-column: span 3; }
+.knopf { width: 100%; background: var(--kupfer); color: #fff; border-color: var(--kupfer); }
+.knopf.an { background: var(--papier); color: var(--tinte); border-color: var(--linie); }
+.regler { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-size: .92rem; color: var(--leise); flex-wrap: wrap; }
+.regler input { flex: 1; min-width: 140px; accent-color: var(--kupfer); }
+.fehler { color: var(--warn); font-size: .95rem; }
+.anzeige { text-align: center; margin: 18px 0 10px; }
+.note { font-size: 3.2rem; font-weight: 800; line-height: 1.1; }
+.frequenz, .cent-wert { color: var(--leise); font-variant-numeric: tabular-nums; }
+.cent-skala {
+  position: relative; height: 34px; margin: 14px 0 6px;
+  border-radius: 17px; background: var(--papier); border: 1px solid var(--linie);
+  overflow: hidden;
+}
+.cent-mitte { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--linie); }
+.cent-zeiger {
+  position: absolute; top: 4px; bottom: 4px; width: 8px; margin-left: -4px; left: 50%;
+  border-radius: 4px; background: var(--leise); transition: left 60ms linear; opacity: .3;
+}
+.cent-zeiger.sichtbar { opacity: 1; }
+.cent-zeiger.gut { background: var(--gut); }
+.cent-zeiger.daneben { background: var(--kupfer); }
+.pegel { position: relative; height: 8px; border-radius: 4px; background: var(--papier); border: 1px solid var(--linie); overflow: hidden; margin-top: 12px; }
+.pegel-balken { height: 100%; width: 0; background: var(--kupfer); }
+.pegel-schwelle { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--tinte); }
+.diagnose { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; font-size: .9rem; }
+.diagnose dt { color: var(--leise); }
+.diagnose dd { margin: 0; word-break: break-word; font-variant-numeric: tabular-nums; }
