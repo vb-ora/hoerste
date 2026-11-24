@@ -16,9 +16,23 @@ Gehörtraining und Singtraining im Browser – für Handy und Rechner, selbst ge
    - Reverse-Proxy-Regel → „Benutzerdefinierte Kopfzeile“ → „Erstellen“ → „WebSocket“ (schadet nicht, später nützlich)
    - Zertifikat unter „Sicherheit → Zertifikat → Einstellungen“ der Subdomain zuweisen
    - Router: nur 443 auf die NAS weiterleiten, **nicht** Port 8020
-6. Prüfen: `https://hoerste.bora-emby.synology.me/healthz` liefert `{"status":"ok"}`, Testseite unter `/labor`
+6. Prüfen: `https://hoerste.bora-emby.synology.me/healthz` liefert `{"status":"ok"}`, danach unter `/login` anmelden
 
-Hinweis Etappe 0: Die App braucht noch keine Werte aus `.env`, die Datei muss aber existieren (sonst bricht `docker compose` ab).
+### Pflichtwerte in `.env` (ab Etappe 1)
+- `HOERSTE_SECRET_KEY`: mindestens 32 Zeichen, z. B. `python3 -c "import secrets; print(secrets.token_urlsafe(48))"`
+- `HOERSTE_SUPERADMIN_NAME` und `HOERSTE_SUPERADMIN_PASSWORT_HASH` (bcrypt, jedes `$` als `$$`)
+  Hash auf der NAS erzeugen (fragt das Passwort verdeckt ab), danach jedes `$` verdoppeln:
+  ```bash
+  sudo docker run --rm -it python:3.12-slim sh -c 'pip -q install bcrypt && python -c "import bcrypt,getpass; print(bcrypt.hashpw(getpass.getpass().encode(), bcrypt.gensalt()).decode())"'
+  ```
+- `HOERSTE_COOKIE_SECURE=true`
+
+Fehlt einer der Werte, startet der Container nicht (`sudo docker logs hoerste` zeigt den Grund).
+Beim Start wird die Datenbank nach `data/backups/` gesichert (die letzten 10 bleiben).
+
+## Lokal entwickeln
+`.env` im Projektordner anlegen wie oben, aber mit `HOERSTE_COOKIE_SECURE=false` und `HOERSTE_DATA_DIR=./data`.
+Die App liest die `.env` selbst ein, ein `set ...` ist nicht nötig.
 
 ## Update
 ```bash

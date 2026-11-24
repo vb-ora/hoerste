@@ -33,6 +33,9 @@ Pitch Trainer dient nur als Orientierung für Funktionsumfang und Lernlogik. Tex
 | `nutzer` | Üben, eigene Statistik, eigene Einstellungen |
 
 - **Einladungslinks**: Admin erzeugt einen Link mit Token (7 Tage gültig, einmal nutzbar). Darüber legt die Person Name und Passwort selbst fest. Keine offene Registrierung.
+- **Passwort zurücksetzen**: Admin erzeugt einen Einmal-Link (24 Stunden gültig), über den die Person selbst ein neues Passwort setzt. Der Admin kennt das Passwort nie.
+- **Wer verwaltet wen**: Admins verwalten nur Konten mit Rolle `nutzer`. Der Superadmin verwaltet alle außer sich selbst (sein Konto kommt aus der `.env`).
+- **Login-Bremse** im Arbeitsspeicher (ein Uvicorn-Prozess). Nach einem Neustart sind die Zähler zurückgesetzt.
 - **Datenschutz im Chor**: Admins sehen die Nutzerliste (Name, Rolle, aktiv, letzter Login), aber **keine Übungsdaten** anderer Personen.
 - **Sicherheit**: Cookie `HttpOnly`, `Secure`, `SameSite=Lax`, Laufzeit 30 Tage. Login-Bremse: nach 5 Fehlversuchen pro Name und IP 15 Minuten Sperre. API-Aufrufe mit Schreibzugriff verlangen den Header `X-Hoerste: 1` (CSRF-Schutz zusammen mit SameSite). Passwort mindestens 10 Zeichen.
 
@@ -209,8 +212,9 @@ Alle Tabellen mit `id INTEGER PRIMARY KEY`, `erstellt_am`, `aktiv INTEGER DEFAUL
 
 | Tabelle | Wichtige Spalten |
 |---|---|
-| `nutzer` | `name` (unique), `passwort_hash`, `rolle`, `letzter_login` |
-| `einladung` | `token`, `erstellt_von`, `gueltig_bis`, `eingeloest_von`, `eingeloest_am` |
+| `nutzer` | `name` (unique, ohne Groß-/Kleinschreibung), `passwort_hash`, `rolle`, `letzter_login`, `sitzungs_stand` (erhöht bei Passwortwechsel/Deaktivierung, macht alte Cookies ungültig) |
+| `einladung` | `token` (als SHA-256-Hash), `erstellt_von`, `gueltig_bis`, `eingeloest_von`, `eingeloest_am` |
+| `passwort_link` | `nutzer_id`, `token` (Hash), `erstellt_von`, `gueltig_bis` (24 h), `eingeloest_am` |
 | `einstellung` | `nutzer_id`, `h_system` (`H`/`B`), `vorzeichen` (`silben`/`zeichen`), `klang` (`synth`/`klavier`), `tagesziel_min`, `toleranz_cent`, `stimmlage`, `umfang_tief`, `umfang_hoch` |
 | `lektion_status` | `nutzer_id`, `lektion_key`, `freigeschaltet_am`, `abgeschlossen_am` |
 | `item_status` | `nutzer_id`, `item_key`, `box`, `faellig_am`, `richtig`, `falsch`, `zuletzt_am`, `letzter_aufstieg_am` |

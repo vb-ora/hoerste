@@ -1,0 +1,18 @@
+{% extends "basis.html" %}
+{% block inhalt %}
+<section class="karte schmal">
+  <h2>Anmelden</h2>
+  <form data-api="/api/login" class="formular">
+    <input type="hidden" name="weiter" value="{{ weiter }}">
+    <label>Name
+      <input name="name" autocomplete="username" autocapitalize="off" required>
+    </label>
+    <label>Passwort
+      <input name="passwort" type="password" autocomplete="current-password" required>
+    </label>
+    <p class="meldung" role="alert" hidden></p>
+    <button class="knopf" type="submit">Anmelden</button>
+  </form>
+  <p class="hinweis">Noch kein Konto? Hörste ist nur mit Einladung nutzbar.</p>
+</section>
+{% endblock %}

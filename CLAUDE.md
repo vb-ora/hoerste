@@ -16,8 +16,7 @@ Vor jeder Arbeit lesen: `docs/KONZEPT.md` (Architektur, Datenmodell, Lernlogik) 
 # Lokal entwickeln (ohne Docker)
 python -m venv .venv && .venv\Scripts\activate      # Windows
 pip install -r requirements.txt -r requirements-dev.txt
-set HOERSTE_DATA_DIR=./data & set HOERSTE_COOKIE_SECURE=false
-uvicorn app.main:app --reload --port 8000
+uvicorn app.main:app --reload --port 8000   # liest die lokale .env selbst (siehe README)
 
 # Tests
 pytest -q
@@ -81,7 +80,8 @@ data/                (gitignored) hoerste.db, backups/ – Bind-Mount im Contain
 - Samples als MP3 (iOS-tauglich), vorladen beim ersten Öffnen eines Trainers mit Klavierklang.
 
 ## Sicherheit
-- Zugriff von außen ist vorgesehen. Jede Seite außer `/login`, `/einladung/{token}`, `/healthz` und statischen Dateien verlangt Login.
+- Zugriff von außen ist vorgesehen. Jede Seite außer `/login`, `/einladung/{token}`, `/passwort/{token}`, `/healthz` und statischen Dateien verlangt Login.
+- Formulare (auch Login) senden per `fetch` über `static/js/api.js`, damit die Kennung `X-Hoerste: 1` immer dabei ist.
 - Session-Cookie `hoerste_session`: HttpOnly, Secure (abschaltbar nur lokal), SameSite=Lax.
 - Schreibende API-Aufrufe verlangen Header `X-Hoerste: 1`.
 - Login-Bremse: 5 Fehlversuche pro Name und IP → 15 Minuten Sperre.

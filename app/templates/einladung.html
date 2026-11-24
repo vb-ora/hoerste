@@ -1,0 +1,20 @@
+{% extends "basis.html" %}
+{% block inhalt %}
+<section class="karte schmal">
+  <h2>Willkommen bei Hörste</h2>
+  <p class="hinweis">Du wurdest eingeladen. Wähle einen Namen und ein Passwort mit mindestens 10 Zeichen.</p>
+  <form data-api="/api/einladung/{{ token }}" class="formular">
+    <label>Name
+      <input name="name" autocomplete="username" autocapitalize="off" minlength="2" maxlength="40" required>
+    </label>
+    <label>Passwort
+      <input name="passwort" type="password" autocomplete="new-password" minlength="10" required>
+    </label>
+    <label>Passwort wiederholen
+      <input name="passwort2" type="password" autocomplete="new-password" minlength="10" required>
+    </label>
+    <p class="meldung" role="alert" hidden></p>
+    <button class="knopf" type="submit">Konto anlegen</button>
+  </form>
+</section>
+{% endblock %}

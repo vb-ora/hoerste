@@ -1,0 +1,23 @@
+{% extends "basis.html" %}
+{% block inhalt %}
+<section class="karte">
+  <h2>Hallo {{ nutzer.name }}</h2>
+  <p class="hinweis">Die Trainer für Tonhöhe, Intervalle, Akkorde, Skalen und Akkordfolgen kommen in den nächsten Etappen dazu.</p>
+</section>
+<div class="kacheln">
+  <a class="kachel" href="/labor">
+    <strong>Labor</strong>
+    <span>Klang und Mikrofon ausprobieren</span>
+  </a>
+  <a class="kachel" href="/einstellungen">
+    <strong>Einstellungen</strong>
+    <span>Notennamen, Klang, Tagesziel</span>
+  </a>
+  {% if nutzer.rolle in ('admin', 'superadmin') %}
+  <a class="kachel" href="/admin">
+    <strong>Verwaltung</strong>
+    <span>Einladungen und Konten</span>
+  </a>
+  {% endif %}
+</div>
+{% endblock %}

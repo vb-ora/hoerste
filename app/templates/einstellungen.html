@@ -1,0 +1,74 @@
+{% extends "basis.html" %}
+
+{% macro wahl(feld, wert, aktuell, text, unter) -%}
+<label class="wahl">
+  <input type="radio" name="{{ feld }}" value="{{ wert }}" {{ 'checked' if aktuell|string == wert|string }}>
+  <span><strong>{{ text }}</strong>{% if unter %}<small>{{ unter }}</small>{% endif %}</span>
+</label>
+{%- endmacro %}
+
+{% block inhalt %}
+<form data-api="/api/konto/einstellungen" data-zahlen="tagesziel_min,toleranz_cent" class="formular">
+  <section class="karte">
+    <h2>Notennamen</h2>
+    <fieldset class="wahlgruppe">
+      <legend>Der Ton zwischen A und C heißt</legend>
+      {{ wahl('h_system', 'H', einst.h_system, 'H (deutsch)', 'H, und B für den Ton darunter') }}
+      {{ wahl('h_system', 'B', einst.h_system, 'B (international)', 'B, und B♭ für den Ton darunter') }}
+    </fieldset>
+    <fieldset class="wahlgruppe">
+      <legend>Erhöhte und erniedrigte Töne</legend>
+      {{ wahl('vorzeichen', 'silben', einst.vorzeichen, 'Silben', 'Cis, Es, Fis …') }}
+      {{ wahl('vorzeichen', 'zeichen', einst.vorzeichen, 'Zeichen', 'C♯, E♭, F♯ …') }}
+    </fieldset>
+  </section>
+
+  <section class="karte">
+    <h2>Klang</h2>
+    <fieldset class="wahlgruppe">
+      <legend>Töne in den Trainern</legend>
+      {{ wahl('klang', 'synth', einst.klang, 'Synth', 'weich und klar') }}
+      {{ wahl('klang', 'klavier', einst.klang, 'Klavier', 'folgt in Etappe 2') }}
+    </fieldset>
+  </section>
+
+  <section class="karte">
+    <h2>Üben</h2>
+    <label>Tagesziel in Minuten
+      <input name="tagesziel_min" type="number" inputmode="numeric" min="1" max="120" value="{{ einst.tagesziel_min }}" required>
+    </label>
+    <fieldset class="wahlgruppe drei">
+      <legend>Toleranz beim Singen</legend>
+      {{ wahl('toleranz_cent', 15, einst.toleranz_cent, '15 Cent', 'streng') }}
+      {{ wahl('toleranz_cent', 25, einst.toleranz_cent, '25 Cent', 'normal') }}
+      {{ wahl('toleranz_cent', 40, einst.toleranz_cent, '40 Cent', 'locker') }}
+    </fieldset>
+    <p class="meldung" role="status" hidden></p>
+    <button class="knopf" type="submit">Speichern</button>
+  </section>
+</form>
+
+<section class="karte">
+  <h2>Konto</h2>
+  <p class="hinweis">Angemeldet als <strong>{{ nutzer.name }}</strong> ({{ ROLLEN_NAMEN[nutzer.rolle] }}).</p>
+  {% if nutzer.rolle != 'superadmin' %}
+  <form data-api="/api/konto/passwort" data-leeren class="formular">
+    <input type="text" name="_name" value="{{ nutzer.name }}" autocomplete="username" hidden>
+    <label>Bisheriges Passwort
+      <input name="alt" type="password" autocomplete="current-password" required>
+    </label>
+    <label>Neues Passwort
+      <input name="neu" type="password" autocomplete="new-password" minlength="10" required>
+    </label>
+    <label>Neues Passwort wiederholen
+      <input name="neu2" type="password" autocomplete="new-password" minlength="10" required>
+    </label>
+    <p class="meldung" role="status" hidden></p>
+    <button class="knopf zweit" type="submit">Passwort ändern</button>
+  </form>
+  {% else %}
+  <p class="hinweis">Das Passwort des Superadmins steht als Hash in der <code>.env</code> auf der NAS.</p>
+  {% endif %}
+  <button class="knopf zweit" type="button" data-abmelden>Abmelden</button>
+</section>
+{% endblock %}

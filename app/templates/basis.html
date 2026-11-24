@@ -5,16 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="light dark">
   <title>{{ titel }} · Hörste</title>
+  <link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/static/css/stil.css">
 </head>
-<body>
+<body class="{{ 'mit-navi' if nutzer else '' }}">
   <header class="kopf">
-    <span class="logo">Hörste</span>
+    <a class="logo" href="/" aria-label="Hörste – Start">
+      <svg class="logo-zeichen" viewBox="0 0 64 64" aria-hidden="true">
+        <rect width="64" height="64" rx="16" fill="currentColor"/>
+        <circle cx="20" cy="32" r="5" fill="var(--flaeche)"/>
+        <path d="M30 20a16 16 0 0 1 0 24" fill="none" stroke="var(--flaeche)" stroke-width="5" stroke-linecap="round"/>
+        <path d="M39 13a26 26 0 0 1 0 38" fill="none" stroke="var(--flaeche)" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+      </svg>
+      <span>Hörste</span>
+    </a>
     <span class="kopf-titel">{{ titel }}</span>
   </header>
+
+  {% if nutzer %}
+  {% set pfad = request.url.path %}
+  <nav class="navi" aria-label="Hauptnavigation">
+    <a href="/" class="{{ 'aktiv' if pfad == '/' }}">Start</a>
+    <a href="/labor" class="{{ 'aktiv' if pfad == '/labor' }}">Labor</a>
+    <a href="/einstellungen" class="{{ 'aktiv' if pfad == '/einstellungen' }}">Einstellungen</a>
+    {% if nutzer.rolle in ('admin', 'superadmin') %}
+    <a href="/admin" class="{{ 'aktiv' if pfad == '/admin' }}">Verwaltung</a>
+    {% endif %}
+  </nav>
+  {% endif %}
+
   <main class="inhalt">
     {% block inhalt %}{% endblock %}
   </main>
+  <script type="module" src="/static/js/formulare.js"></script>
   {% block skripte %}{% endblock %}
 </body>
 </html>
